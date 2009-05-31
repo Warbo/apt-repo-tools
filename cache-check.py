@@ -61,7 +61,7 @@ else:
 				if (not line[:2] == "\t\t") or (line[2] == "\t"):
 					print "line "+str(n)+": Wrong indentation (should be 2 tabs)"
 					sys.exit(1)
-				elif not line.strip()[:4] == "deb ":
+				elif not line[:6] == "\t\tdeb ":
 					print "line "+str(n)+": Deb lines must begin 'deb '"
 					sys.exit(1)
 				for char in ["&", "<", ">", "'", '"']:
@@ -72,7 +72,7 @@ else:
 				if (not line[:2] == "\t\t") or (line[2] == "\t"):
 					print "line "+str(n)+": Wrong indentation (should be 2 tabs)"
 					sys.exit(1)
-				elif not line.strip()[:8] == "deb-src ":
+				elif not line[:10] == "\t\tdeb-src ":
 					print "line "+str(n)+": Source lines must begin 'deb-src '"
 					sys.exit(1)
 				for char in ["&", "<", ">", "'", '"']:
