@@ -48,6 +48,20 @@ put into files suitable for including in /etc/apt/sources.list.d
 (only parses the files at the moment, doesn't save to files yet since
 the naming scheme isn't decided upon yet)
 
+CACHE-CHECK.PY
+--------------
+This script checks a given file of repository data (given with the
+-f=filename option) using the format described below. The nested
+structure is checked, to make sure nothing overlaps, and some basic
+heuristics are used to validate the contents. This is useful since
+screen scraping is prone to errors, which should preferably be spotted
+ASAP rather than generating bogus packages.
+
+Only the first error encountered is reported, since the parsing system
+may fail afterwards. This means that a check-fix-check cycle must be
+used until no errors are reported (and even then some obscure ones might
+still be present).
+
 DATA FORMAT
 -----------
 The format currently used to store repostory data is plain text with the
