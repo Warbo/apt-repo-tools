@@ -83,19 +83,25 @@ def make_source_lists(repo):
 			lists[key] = "### AUTOMATICALLY GENERATED SOURCE LIST\n\n## Source\n" + debsrc + "\n"
 	return lists.values()
 
-infile = open("cache.txt", "r")
-inline = ""
-for line in infile.readlines():
-	inline = inline + line
+infile = None
+for arg in sys.argv:
+	if arg.startswith("-f="):
+		infile = open(arg[3:], 'r')
+if infile is None:
+	print "Please supply a file to check using the -f=something option"
+else:
+	inline = ""
+	for line in infile.readlines():
+		inline = inline + line
 
-repo_text = get_repos(inline)
-repos = []
-for repo in repo_text:
-	repos.append(get_sections(repo))
+	repo_text = get_repos(inline)
+	repos = []
+	for repo in repo_text:
+		repos.append(get_sections(repo))
 
-sources = []
-for repo in repos:
-	sources.extend(make_source_lists(repo))
+	sources = []
+	for repo in repos:
+		sources.extend(make_source_lists(repo))
 
-for source in sources:
-	print source
+	for source in sources:
+		print source
