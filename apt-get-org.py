@@ -16,7 +16,7 @@ def get_repo(text):
 	repo = {'deb_lines':[], 'debsrc_lines':[], 'packages':{}}
 	for line in text:
 		if "deb " in line and "href" in line and (not "<" in line.replace("<a","a").replace("</a>","a")):
-			repo['deb_lines'].append(line.split("<")[0] + line.split('>')[1].split('<')[0] + line.split('/a>')[1].split('<br/>')[0])
+			repo['deb_lines'].append((line.split("<")[0] + line.split('>')[1].split('<')[0] + line.split('/a>')[1].split('<br/>')[0]).strip())
 		elif "deb-src " in line and "href" in line:
 			repo['debsrc_lines'].append(line.split("<")[0] + line.split('>')[1].split('<')[0] + line.split('/a>')[1].split('<br/>')[0])
 		if '<a href="/list/?site=' in line:

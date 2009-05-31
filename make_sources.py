@@ -1,6 +1,38 @@
 #!/usr/bin/env python
+import hashlib
+import sys
+
+def get_identifier(text):
+	# Gets a friendly identifier for the given source list text
+	# This is the URL, for example
+	# deb http://www.debian-multimedia.org stable main
+	# Will give "debian-multimedia"
+	try:
+		for line in text.split("\n"):
+			d = False
+			if line[:7] == "deb-src":
+				ident = line[7:].strip().split(" ")[0].strip()
+				d = True
+			elif line[:3] == "deb":
+				ident = line[3:].strip().split(" ")[0].strip()
+				d = True
+			if d:
+				ident = ident.split('://')[1].strip()
+				if '/' in ident:
+					ident = ident.split('/')[0].strip()
+				ident_list = ident.split('.')
+				l = len(ident_list[0])
+				for i in ident_list:
+					l = max([l, len(i)])
+					if len(i) == l and (not i in ["www", "com", "org", "net", "ftp"]):
+						to_return = i
+				return to_return
+	except:
+		return ''
 
 def get_repos(text):
+	# This splits the given string into a list of repositories delimited
+	# by "STARTREPO" and "ENDREPO"
 	repos = []
 	current_repo = []
 	for line in text.split("\n"):
@@ -13,6 +45,8 @@ def get_repos(text):
 	return repos
 
 def get_sections(repo):
+	# Turns a given list of lines (from a repo definition) and puts the
+	# contained values into a dictionary
 	features = {}
 	current_feature = None
 	currently_in = (None, None)
@@ -59,6 +93,7 @@ def get_sections(repo):
 	return features
 
 def get_args(line):
+	# Gets the values following a deb or deb-src line's URL
 	if "deb-src" in line:
 		args = line[8:]
 	elif "deb" in line:
@@ -67,6 +102,8 @@ def get_args(line):
 	return args.strip()
 
 def make_source_lists(repo):
+	# Returns a list of strings, representing the possible sources which
+	# the given repo dictinary could provide
 	lists = {}
 	handled_args = []
 	for deb in repo['deb']:
@@ -83,6 +120,7 @@ def make_source_lists(repo):
 			lists[key] = "### AUTOMATICALLY GENERATED SOURCE LIST\n\n## Source\n" + debsrc + "\n"
 	return lists.values()
 
+# Get a file to read
 infile = None
 for arg in sys.argv:
 	if arg.startswith("-f="):
@@ -90,18 +128,33 @@ for arg in sys.argv:
 if infile is None:
 	print "Please supply a file to check using the -f=something option"
 else:
+
+	# Get the text from the input file
 	inline = ""
 	for line in infile.readlines():
 		inline = inline + line
 
+	# Split the text into lines for each repo
 	repo_text = get_repos(inline)
+	# Get a dictionary for each repo, containing its features
 	repos = []
 	for repo in repo_text:
 		repos.append(get_sections(repo))
 
+	# Make a list of sources.list strings from the repo features
 	sources = []
 	for repo in repos:
 		sources.extend(make_source_lists(repo))
 
+	# Write out the source files
 	for source in sources:
-		print source
+		if not source.strip() == "":
+			m = hashlib.md5()
+			m.update(source)
+			hash = m.hexdigest()
+			if get_identifier(source) is None:
+				print source
+			f = open('temp/lists/'+get_identifier(source)+'_'+hash, 'w')
+			f.write(source)
+			f.close()
+

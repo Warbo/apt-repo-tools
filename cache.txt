@@ -39496,7 +39496,7 @@ ENDREPO
 
 STARTREPO
 	STARTDEBS
-		 deb http://dl.google.com/linux/deb/ stable non-free
+		deb http://dl.google.com/linux/deb/ stable non-free
 	ENDDEBS
 	STARTSOURCES
 	ENDSOURCES
@@ -41656,7 +41656,7 @@ ENDREPO
 
 STARTREPO
 	STARTDEBS
-		 deb http://debian.beryl-project.org/ etch main
+		deb http://debian.beryl-project.org/ etch main
 	ENDDEBS
 	STARTSOURCES
 		deb-src http://debian.beryl-project.org/ etch main
