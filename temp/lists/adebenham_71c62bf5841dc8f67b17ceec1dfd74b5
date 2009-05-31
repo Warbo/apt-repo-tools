@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://www.adebenham.com/debian/ ./
+## Source
+deb-src http://www.adebenham.com/debian/ ./

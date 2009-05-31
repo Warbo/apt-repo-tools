@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://elonen.iki.fi/code/unofficial-debs/ ./
+## Source
+deb-src http://elonen.iki.fi/code/unofficial-debs/ ./

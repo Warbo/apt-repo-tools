@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://agrogeomatic.educagri.fr/debian stable main
+## Source
+deb-src http://agrogeomatic.educagri.fr/debian stable main

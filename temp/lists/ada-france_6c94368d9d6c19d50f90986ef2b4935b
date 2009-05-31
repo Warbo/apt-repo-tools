@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://www.ada-france.org/debian ada main
+## Source
+deb-src http://www.ada-france.org/debian ada main

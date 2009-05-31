@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://www.pcxperience.org/apt/debian stable/
+## Source
+deb-src http://www.pcxperience.org/apt/debian stable/

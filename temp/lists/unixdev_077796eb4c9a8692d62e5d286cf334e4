@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://ftp.unixdev.net/pub/debian-udev unixdev main non-free
+## Source
+deb-src http://ftp.unixdev.net/pub/debian-udev unixdev main non-free

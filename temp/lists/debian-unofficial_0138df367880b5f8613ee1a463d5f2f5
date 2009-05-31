@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://ftp.debian-unofficial.org/debian sarge main contrib non-free restricted
+## Source
+deb-src http://ftp.debian-unofficial.org/debian sarge main contrib non-free restricted

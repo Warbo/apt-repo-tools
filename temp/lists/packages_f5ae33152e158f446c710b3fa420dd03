@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://packages.dotdeb.org stable all
+## Source
+deb-src http://packages.dotdeb.org stable all

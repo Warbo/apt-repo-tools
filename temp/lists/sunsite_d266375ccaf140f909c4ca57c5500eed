@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://typo3.sunsite.dk/software/debian/ ./
+## Source
+deb-src http://typo3.sunsite.dk/software/debian/ ./

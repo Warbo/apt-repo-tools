@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://moria.seul.org/~lexicon/debian ./
+## Source
+deb-src http://moria.seul.org/~lexicon/debian ./

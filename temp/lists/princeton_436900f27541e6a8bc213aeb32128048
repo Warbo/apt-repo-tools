@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://borex.princeton.edu/~kmccarty/ stable main contrib non-free
+## Source
+deb-src http://borex.princeton.edu/~kmccarty/ stable main contrib non-free

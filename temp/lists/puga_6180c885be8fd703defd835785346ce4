@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://puga.vdu.lt/debian sid main
+## Source
+deb-src http://puga.vdu.lt/debian sid main

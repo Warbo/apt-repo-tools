@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://www.vanadac.com/~dajhorn/projects/debian-pptp woody main
+## Source
+deb-src http://www.vanadac.com/~dajhorn/projects/debian-pptp woody main

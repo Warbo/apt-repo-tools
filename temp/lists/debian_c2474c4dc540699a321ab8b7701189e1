@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://debian.twc.de/unstable/i386 ./
+## Binary
+deb http://debian.twc.de/stable/i386 ./

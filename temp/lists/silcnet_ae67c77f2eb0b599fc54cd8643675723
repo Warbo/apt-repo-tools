@@ -1,0 +1,18 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://silcnet.org/download/client/deb ./
+## Binary
+deb http://silcnet.org/download/server/deb ./
+## Binary
+deb ftp://silcnet.org/silc/client/deb ./
+## Binary
+deb ftp://silcnet.org/silc/server/deb ./
+## Source
+deb-src http://silcnet.org/download/client/deb ./
+## Source
+deb-src http://silcnet.org/download/server/deb ./
+## Source
+deb-src ftp://silcnet.org/silc/client/deb ./
+## Source
+deb-src ftp://silcnet.org/silc/server/deb ./

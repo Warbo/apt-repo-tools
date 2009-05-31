@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb ftp://fisher.ciencias.uniovi.es/debian unstable main
+## Source
+deb-src ftp://fisher.ciencias.uniovi.es/debian unstable main

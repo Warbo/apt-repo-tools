@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://ftp.acc.umu.se/mirror/mirrors.evilgeniuses.org.uk/debian/backports/woody gnome2.2/
+## Source
+deb-src http://ftp.acc.umu.se/mirror/mirrors.evilgeniuses.org.uk/debian/backports/woody gnome2.2/

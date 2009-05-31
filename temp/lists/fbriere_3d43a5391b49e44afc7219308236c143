@@ -1,0 +1,8 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://www.fbriere.net/debian/dists/stable quakeforge/
+## Binary
+deb http://www.fbriere.net/debian/dists/testing quakeforge/
+## Binary
+deb http://www.fbriere.net/debian/dists/unstable quakeforge/

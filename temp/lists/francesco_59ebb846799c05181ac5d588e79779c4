@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://francesco.ovh.org/debian/ sid main
+## Source
+deb-src http://francesco.ovh.org/debian/ sid main

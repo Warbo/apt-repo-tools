@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://download.videolan.org/pub/videolan/debian woody main
+## Source
+deb-src http://download.videolan.org/pub/videolan/debian woody main

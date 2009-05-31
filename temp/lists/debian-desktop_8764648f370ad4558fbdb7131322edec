@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://www.debian-desktop.org/pub/linux/debian/xorg-6.8.99.15/ sarge main
+## Source
+deb-src http://www.debian-desktop.org/pub/linux/debian/xorg-6.8.99.15/ sarge main

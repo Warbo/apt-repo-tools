@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://ensl.free.fr/softeleves/debian unstable main
+## Source
+deb-src http://ensl.free.fr/softeleves/debian unstable main

@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://juergen.strobel.info/debian-strobel/ unstable kernel
+## Source
+deb-src http://juergen.strobel.info/debian-strobel/ unstable kernel

@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://opensource.polytechnique.org/debian ./
+## Source
+deb-src http://opensource.polytechnique.org/debian ./

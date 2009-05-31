@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://software.nature-consult.de/repos/debian_etch etch main
+## Source
+deb-src http://software.nature-consult.de/repos/debian_etch etch main

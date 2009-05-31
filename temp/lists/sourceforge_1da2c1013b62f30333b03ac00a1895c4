@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://dl.sourceforge.net/sourceforge/jedit ./
+## Source
+deb-src http://dl.sourceforge.net/sourceforge/jedit ./

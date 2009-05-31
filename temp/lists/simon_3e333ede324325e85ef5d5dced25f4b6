@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://simon.bofh.ms/~gb/debian/ ./
+## Binary
+deb http://simon.bofh.ms/~gb/debian-dev/ ./

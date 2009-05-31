@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://www.vollstreckernet.de/debian/   testing amule
+## Source
+deb-src http://www.vollstreckernet.de/debian/   testing amule

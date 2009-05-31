@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://www.roughtrade.net/debian sid main
+## Source
+deb-src http://www.roughtrade.net/debian sid main

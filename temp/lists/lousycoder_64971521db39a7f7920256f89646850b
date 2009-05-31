@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://apt.lousycoder.com unstable main
+## Source
+deb-src http://apt.lousycoder.com unstable main

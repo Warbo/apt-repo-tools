@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://everybody.good-day.net/~yamasaki/packages/kreetingkard/ ./
+## Source
+deb-src http://everybody.good-day.net/~yamasaki/packages/kreetingkard/ ./

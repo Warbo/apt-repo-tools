@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb ftp://ftp.uni-marburg.de/linux/debian sarge openldap-2.2.15
+## Source
+deb-src ftp://ftp.uni-marburg.de/linux/debian sarge openldap-2.2.15

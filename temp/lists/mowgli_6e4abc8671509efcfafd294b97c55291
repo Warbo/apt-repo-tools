@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb ftp://ftp.mowgli.ch/pub/debian sarge unofficial
+## Source
+deb-src ftp://ftp.mowgli.ch/pub/debian sarge unofficial

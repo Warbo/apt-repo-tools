@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://www.j96.org/~kouji/tmp/ttf-ipafonts-installer/ ./
+## Source
+deb-src http://www.j96.org/~kouji/tmp/ttf-ipafonts-installer/ ./

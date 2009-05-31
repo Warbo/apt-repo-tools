@@ -1,0 +1,8 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://debian.duckcorp.org/unstable/binary-i386/ ./
+## Binary
+deb http://debian.duckcorp.org/experimental/binary-i386/ ./
+## Binary
+deb http://packages.hurdfr.org/unstable/binary-hurd-i386/ ./

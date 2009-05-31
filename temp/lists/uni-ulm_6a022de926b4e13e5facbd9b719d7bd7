@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://www.uni-ulm.de/~s_mgerla/debian ./
+## Source
+deb-src http://www.uni-ulm.de/~s_mgerla/debian ./

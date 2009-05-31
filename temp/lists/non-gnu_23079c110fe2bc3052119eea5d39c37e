@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://non-gnu.uvt.nl/debian stable uvt
+## Source
+deb-src http://non-gnu.uvt.nl/debian stable uvt

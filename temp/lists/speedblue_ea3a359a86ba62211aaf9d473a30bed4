@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://debian.speedblue.org ./
+## Source
+deb-src http://debian.speedblue.org ./

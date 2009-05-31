@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://www.winischhofer.net/sis/debian/unstable ./
+## Source
+deb-src http://www.winischhofer.net/sis/debian/unstable ./

@@ -1,0 +1,6 @@
+### AUTOMATICALLY GENERATED SOURCE LIST
+
+## Binary
+deb http://luca.pca.it/debian/ ./
+## Source
+deb-src http://luca.pca.it/debian/ ./
