@@ -1,0 +1,85 @@
+INTRO
+-----
+Repositories are often seen as a difficulty in Debian. Whilst adding
+and removing packages has become easier and easier, the same is not
+true for package repositories.
+
+However, repositories can be added by adding an appropriate text file to
+/etc/apt/sources.list.d, and packages can contain files. Thus these
+tools aim to remove the complexities of managing repositories by simply
+packaging up every repository. These can then be installed, removed,
+updated, etc. just like any other package, with absolutely no change
+to the packaging system.
+
+Also included are some examples, such as tools to fetch repository data
+from apt-get.org, and hopefully more to follow.
+
+CONTENTS
+--------
+apt-get-org.py - Screen scrapes www.apt-get.org, a vast collection of
+	third-party Debian repositories. Saves the data to a given file.
+
+make_sources.py - Creates files suitable to put in sources.list.d.
+	Automagically groups repos (eg. for matching deb and deb-src lines)
+
+cache-check.py - Does basic checks on a given file of repository data.
+
+cache.txt - cached repo data (output from apt-get-org.py)
+
+APT-GET-ORG.PY
+--------------
+This script takes an output filename "-o=something" (which will be
+overwritten!) and fills it with repository data (in the format described
+below) taken from www.apt-get.org.
+
+It goes to the main page (http://www.apt-get.org/main/) and "screen
+scrapes" data out of the page. It also gets package contents for each
+repository by loading the info page for each one. Since this can
+generate a load on their server, there is a half-second delay between
+handling each repository.
+
+MAKE_SOURCES.PY
+---------------
+This script is given an input file (in the format described below) with
+the option "-f=something". It then parses this to find unique
+combinations for repository/suite. Identical ones are grouped (eg.
+"deb something.com stable" and "deb-src something.com stable") then
+put into files suitable for including in /etc/apt/sources.list.d
+(only parses the files at the moment, doesn't save to files yet since
+the naming scheme isn't decided upon yet)
+
+DATA FORMAT
+-----------
+The format currently used to store repostory data is plain text with the
+following structure (tab-indented)
+
+STARTREPO
+	STARTDEBS
+		deb something.com sid
+		deb something.com stable
+	ENDDEBS
+	STARTSOURCES
+		deb-src something.com sid
+		deb-src something.com stable
+	ENDSOURCES
+	STARTARCHS
+		i386
+		all
+		powerpc
+	ENDARCHS
+	STARTPACKAGES
+		all
+			foo-data 1.0
+			bar-data 2.3
+			baz 8:4.2dfsg3
+		i386
+			foo 1.0
+			bar 2.3
+		powerpc
+			foo 1.0
+	ENDPACKAGES
+ENDREPO
+
+STARTREPO
+	STARTARCH
+and so on

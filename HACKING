@@ -1,0 +1,8 @@
+NOTES FOR DEVELOPING THESE SCRIPTS
+
+Some repositories on apt-get.org contain architectures surrounded in
+single quotes, eg. "'i386'", "''i386''" and "'''i386'''". As far as I
+can tell these are only ever duplicates, ie. anything containing "'all'"
+will also contain "all", and there never seem to be any packages listed
+for these quoted archs. Therefore we filter with the "check_arch"
+function to throw away those in quotes.
