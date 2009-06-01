@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://vdeffontaines.free.fr/debian/dists/ unstable/
-## Source
-deb-src http://vdeffontaines.free.fr/debian/dists/ unstable/

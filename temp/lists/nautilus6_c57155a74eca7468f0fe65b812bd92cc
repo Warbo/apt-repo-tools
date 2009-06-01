@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://software.nautilus6.org/packages/debian unstable/
-## Source
-deb-src http://software.nautilus6.org/packages/debian unstable/

@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb ftp://ftp.berlios.de/pub/qrc debian/sarge/
-## Source
-deb-src ftp://ftp.berlios.de/pub/qrc debian/sarge/

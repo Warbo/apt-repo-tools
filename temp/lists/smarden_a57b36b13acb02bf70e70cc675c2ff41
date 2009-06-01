@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://smarden.org/pape/Debian potato unofficial pape
-## Source
-deb-src http://smarden.org/pape/Debian potato unofficial pape

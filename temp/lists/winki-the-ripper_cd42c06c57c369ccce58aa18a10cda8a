@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://www.winki-the-ripper.de/share/debs/debian sid contrib
-## Source
-deb-src http://www.winki-the-ripper.de/share/debs/debian sid contrib

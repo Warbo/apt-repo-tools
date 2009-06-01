@@ -154,7 +154,7 @@ else:
 			hash = m.hexdigest()
 			if get_identifier(source) is None:
 				print source
-			f = open('temp/lists/'+get_identifier(source)+'_'+hash, 'w')
+			f = open('temp/lists/'+get_identifier(source)+'_'+hash+'.list', 'w')
 			f.write(source)
 			f.close()
 

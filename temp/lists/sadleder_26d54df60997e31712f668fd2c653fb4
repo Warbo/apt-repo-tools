@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://sadleder.de/debian/ ./
-## Source
-deb-src http://sadleder.de/debian/ ./

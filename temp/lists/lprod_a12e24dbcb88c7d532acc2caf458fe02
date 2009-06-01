@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://lprod.org/deb/breezy/ ./
-## Source
-deb-src http://lprod.org/deb/breezy/ ./

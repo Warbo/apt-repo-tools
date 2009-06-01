@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://erlug.linux.it/~da/deb/ ./
-## Source
-deb-src http://erlug.linux.it/~da/deb/ ./

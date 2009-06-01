@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://www.iiec.unam.mx/apt/ etch drupal
-## Source
-deb-src http://www.iiec.unam.mx/apt/ etch drupal

@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://panp.sourceforge.net/debian ./
-## Source
-deb-src http://panp.sourceforge.net/debian ./

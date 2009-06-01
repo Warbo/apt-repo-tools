@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://debian.sdinet.de/ sid sdinet
-## Source
-deb-src http://debian.sdinet.de/ sid sdinet

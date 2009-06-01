@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://people.realnode.com/~mnordstr/ package/sarge/
-## Source
-deb-src http://people.realnode.com/~mnordstr/ package/sarge/

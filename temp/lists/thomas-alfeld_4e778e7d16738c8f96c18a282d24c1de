@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://www.thomas-alfeld.de/frank/download/debian/ ./
-## Source
-deb-src http://www.thomas-alfeld.de/frank/download/debian/ ./

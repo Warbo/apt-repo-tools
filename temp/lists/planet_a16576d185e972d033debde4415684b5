@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://home.planet.nl/~autar022/ ./
-## Source
-deb-src http://home.planet.nl/~autar022/ ./

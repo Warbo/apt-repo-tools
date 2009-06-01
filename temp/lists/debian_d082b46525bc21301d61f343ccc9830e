@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://debian.systs.org/ stable openvz
-## Source
-deb-src http://debian.systs.org/ stable openvz

@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://apt.y-0.net/ testing main
-## Source
-deb-src http://apt.y-0.net/ testing main

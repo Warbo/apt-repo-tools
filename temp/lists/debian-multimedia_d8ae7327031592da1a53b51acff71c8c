@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://www.debian-multimedia.org sid main
-## Source
-deb-src http://www.debian-multimedia.org sid main

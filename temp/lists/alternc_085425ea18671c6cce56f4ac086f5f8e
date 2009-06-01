@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://debian.alternc.org/  stable main contrib
-## Source
-deb-src http://debian.alternc.org/      stable main contrib

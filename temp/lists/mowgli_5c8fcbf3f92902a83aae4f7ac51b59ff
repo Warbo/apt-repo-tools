@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb ftp://ftp.mowgli.ch/pub/debian sid unofficial
-## Source
-deb-src ftp://ftp.mowgli.ch/pub/debian sid unofficial

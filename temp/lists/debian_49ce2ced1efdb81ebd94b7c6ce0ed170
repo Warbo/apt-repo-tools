@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://people.debian.org/~vdanjean/debian stable main
-## Source
-deb-src http://people.debian.org/~vdanjean/debian stable main

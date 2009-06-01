@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://www.gwhere.org/download/debian unstable main
-## Source
-deb-src http://www.gwhere.org/download/debian unstable main

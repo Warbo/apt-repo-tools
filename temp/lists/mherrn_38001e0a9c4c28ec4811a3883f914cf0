@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://mherrn.de/debian/ woody paranoia
-## Source
-deb-src http://mherrn.de/debian/ woody paranoia

@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://userpages.umbc.edu/~fu1/debian unstable main
-## Source
-deb-src http://userpages.umbc.edu/~fu1/debian unstable main

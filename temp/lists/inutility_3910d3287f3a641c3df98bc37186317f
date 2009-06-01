@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://www.inutility.net/debian/ stable mailscanner spamassassin ldap-ssl
-## Source
-deb-src http://www.inutility.net/debian/ stable mailscanner spamassassin ldap-ssl

@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://deb.openssi.org/v1 ./
-## Source
-deb-src http://deb.openssi.org/v1 ./

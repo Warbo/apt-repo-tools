@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://mirror.opf.slu.cz/zabbix stable contrib
-## Source
-deb-src http://mirror.opf.slu.cz/zabbix stable contrib

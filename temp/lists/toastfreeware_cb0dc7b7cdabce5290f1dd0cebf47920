@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://www.toastfreeware.priv.at/debian stable/
-## Source
-deb-src http://www.toastfreeware.priv.at/debian stable/

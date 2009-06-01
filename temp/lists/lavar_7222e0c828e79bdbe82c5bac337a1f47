@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://eric.lavar.de/comp/linux/debian/ unstable/
-## Source
-deb-src http://eric.lavar.de/comp/linux/debian/ unstable/

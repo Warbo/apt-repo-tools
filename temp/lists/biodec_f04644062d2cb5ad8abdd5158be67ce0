@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://www.biodec.com/opensource/debian sarge main
-## Source
-deb-src http://www.biodec.com/opensource/debian sarge main

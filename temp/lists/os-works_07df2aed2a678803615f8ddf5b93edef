@@ -1,6 +1,0 @@
-### AUTOMATICALLY GENERATED SOURCE LIST
-
-## Binary
-deb http://www.os-works.com/debian testing main
-## Source
-deb-src http://www.os-works.com/debian testing main
