@@ -22,6 +22,8 @@ apt-get-org.py - Screen scrapes www.apt-get.org, a vast collection of
 make_sources.py - Creates files suitable to put in sources.list.d.
 	Automagically groups repos (eg. for matching deb and deb-src lines)
 
+make_packages.py - Creates packages based on the contents of temp/lists
+
 cache-check.py - Does basic checks on a given file of repository data.
 
 cache.txt - cached repo data (output from apt-get-org.py)
@@ -47,6 +49,13 @@ combinations for repository/suite. Identical ones are grouped (eg.
 put into files suitable for including in /etc/apt/sources.list.d
 (only parses the files at the moment, doesn't save to files yet since
 the naming scheme isn't decided upon yet)
+
+MAKE_PACKAGES.PY
+----------------
+This script looks through the "temp/lists" folder for sources.list.d files
+and generates a package for each one in "temp". The packages are
+currently set to architecture "all", maintainer "chriswarbo@gmail.com"
+(me) and have no dependencies or significant description.
 
 CACHE-CHECK.PY
 --------------
