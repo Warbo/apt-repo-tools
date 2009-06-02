@@ -1,30 +1,115 @@
 #!/usr/bin/env python
 
 import urllib2
+import httplib
+import socket
 import time
 import sys
+import lxml
+from lxml.etree import ElementTree, Element, SubElement
+import xml.dom.minidom
+import re
 
 global count
 count = 0
 
+class MyHTTPConnection(httplib.HTTPConnection):
+    """A customised HTTPConnection allowing a per-connection
+    timeout, specified at construction."""
+
+    def __init__(self, host, port=None, strict=None,
+                timeout=None):
+        httplib.HTTPConnection.__init__(self, host, port,
+                strict)
+        self.timeout = timeout
+
+    def connect(self):
+        """Override HTTPConnection.connect to connect to
+        host/port specified in __init__."""
+
+        msg = "getaddrinfo returns an empty list"
+        for res in socket.getaddrinfo(self.host, self.port,
+                0, socket.SOCK_STREAM):
+            af, socktype, proto, canonname, sa = res
+            try:
+                self.sock = socket.socket(af, socktype, proto)
+                if self.timeout:   # this is the new bit
+                    self.sock.settimeout(self.timeout)
+                self.sock.connect(sa)
+            except socket.error, msg:
+                if self.sock:
+                    self.sock.close()
+                self.sock = None
+                continue
+            break
+        if not self.sock:
+            raise socket.error, msg
+
+class MyHTTPHandler(urllib2.HTTPHandler):
+    """A customised HTTPHandler which times out connection
+    after the duration specified at construction."""
+
+    def __init__(self, timeout=None):
+        urllib2.HTTPHandler.__init__(self)
+        self.timeout = timeout
+
+    def http_open(self, req):
+        """Override http_open."""
+
+        def makeConnection(host, port=None, strict=None):
+            return MyHTTPConnection(host, port, strict,
+                    timeout = self.timeout)
+
+        #print "MyHTTPHandler opening", req.get_full_url()
+        return self.do_open(makeConnection, req)
+
 def get_repo(text):
 	"""Gets the repository data from HTML taken from apt-get.org."""
+	time.sleep(0.1)
+
+	# Show and decrement the counter
 	global count
-	time.sleep(0.5)
 	print str(count)
-	count += 1
+	count -= 1
+
 	repo = {'deb_lines':[], 'debsrc_lines':[], 'packages':{}}
 	for line in text:
-		if "deb " in line and "href" in line and (not "<" in line.replace("<a","a").replace("</a>","a")):
-			repo['deb_lines'].append((line.split("<")[0] + line.split('>')[1].split('<')[0] + line.split('/a>')[1].split('<br/>')[0]).strip())
-		elif "deb-src " in line and "href" in line:
-			repo['debsrc_lines'].append(line.split("<")[0] + line.split('>')[1].split('<')[0] + line.split('/a>')[1].split('<br/>')[0])
+		temp = ''
+		if ("deb" in line) and \
+			("<a href=" in line) and \
+			not ("&" in line):
+			temp2 = line.split('<a href="',1)[1]
+			temp = line.split('<a href="')[0] + temp2[temp2.find('>')+1:]
+			temp = temp.split('</a>')[0] + temp.split('</a>',1)[1]
+			if '<span class="url' in temp:
+				temp = temp.split('<span class="url">')[0]+temp.split('<span class="url">',1)[1]
+			if temp.startswith("deb "):
+				repo['deb_lines'].append(temp.strip())
+			elif temp.startswith("deb-src "):
+				repo['debsrc_lines'].append(temp.strip())
+		#if '<span' in line:
+		#	print line
+		if '<span class="descr">' in line:
+			#print '.'
+			try:
+				desc = line[line.find('<span class="descr">'):]
+				repo['description'] = (desc[desc.find('>')+1:desc.find('</span')]).strip()
+			except Exception, e:
+				print e
 		if '<a href="/list/?site=' in line:
-			url = line.split('href=')[1]
-			url = url[url.find('"')+1:]
+			url = line.replace('<span class="packages">','')
+			url = url.replace('<a href="', '')
 			url = url[:url.find('"')]
-			package_page = urllib2.urlopen('http://www.apt-get.org'+url)
-			parse_package_page(package_page, repo)
+			# Now let's fetch a URL
+			http_handler = MyHTTPHandler(timeout = 20)
+			opener = urllib2.build_opener(http_handler)
+
+			req = urllib2.Request('http://www.apt-get.org'+url)
+			try:
+			    package_page = opener.open(req)
+			    parse_package_page(package_page, repo)
+			except Exception, e:
+			    print e
 	return repo
 
 def parse_package_page(page, repo):
@@ -69,7 +154,20 @@ def apt_get_org(outfile):
 	# Load the page containing every repo
 	results_page = urllib2.urlopen("http://www.apt-get.org/main/")
 	# Save each line of HTML in to a list
-	results_list = [line for line in results_page.readlines()]
+	r = ''
+	for line in results_page.readlines():
+		r = r + line
+	r = r.replace('\n','')
+	rs = r.split('<br/>')
+	results_list = []
+	print "lol"
+	for part in rs:
+		if '</li>' in part:
+			results_list.append(part[:part.find('</li>')+5])
+			results_list.append(part[part.find('</li>')+5:])
+			print results_list[-2] + results_list[-1]
+		else:
+			results_list.append(part)
 
 	## Parse the list
 
@@ -79,72 +177,89 @@ def apt_get_org(outfile):
 	repos = []
 	current_repo = []
 	for line in results_list:
-		if in_list:
+		if in_list and len(repos) < 10:
 			if "</ul" in line:
 				in_list = False
 			if in_repo:
 				if "</li>" in line:
 					repos.append(current_repo)
-					current_repo = []
+					current_repo = [line.split('i>',1)[1]]
 					in_repo = False
 				else:
 					current_repo.append(line)
 			else:
 				if "<li" in line:
 					in_repo = True
-					current_repo = []
+					current_repo.append(line)
 
 		else:
 			if "<ul" in line:
 				in_list = True
 
+	# Set the size of our counter
 	global count
-	count = -1 * len(repos)
+	count = len(repos)
+
 	repositories = map(get_repo, repos)
+	reposxml = Element('repositories')
+	outxml = ElementTree(reposxml)
 	for repo in repositories:
-		#print str(repo)
-		outfile.write("STARTREPO\n")
+		current_repo = SubElement(reposxml, 'repository')
 
-		#try:
-		#	outfile.write("\tSTARTCOMMENT\n\t\t"+repo['comment']+"\n\tENDCOMMENT\n")
-		#except KeyError:
-		#	pass
+		# from http://boodebr.org/main/python/all-about-python-and-unicode#UNI_XML
+		RE_XML_ILLEGAL = u'([\u0000-\u0008\u000b-\u000c\u000e-\u001f\ufffe-\uffff])' + \
+			u'|' + \
+			u'([%s-%s][^%s-%s])|([^%s-%s][%s-%s])|([%s-%s]$)|(^[%s-%s])' % \
+			(unichr(0xd800),unichr(0xdbff),unichr(0xdc00),unichr(0xdfff),
+				unichr(0xd800),unichr(0xdbff),unichr(0xdc00),unichr(0xdfff),
+				unichr(0xd800),unichr(0xdbff),unichr(0xdc00),unichr(0xdfff))
+		regex = re.compile(RE_XML_ILLEGAL)
 
-		outfile.write("\tSTARTDEBS\n")
+		if 'description' in repo.keys():
+			desc = SubElement(current_repo, 'description')
+			x = repo['description']
+			for match in regex.finditer(x):
+			    x = x[:match.start()] + "" + x[match.end():]
+			desc.text = x
+
 		try:
 			for deb in repo['deb_lines']:
-				outfile.write('\t\t'+deb+'\n')
-		except:
-			pass
-		outfile.write("\tENDDEBS\n")
+				current_binary = SubElement(current_repo, 'line', attrib={'type':'binary'})
+				try:
+					current_binary.text = deb
+				except ValueError:
+					print "Couldn't add source " + deb
+		except KeyError:
+			print "No binaries"
 
-		outfile.write("\tSTARTSOURCES\n")
 		try:
 			for debsrc in repo['debsrc_lines']:
-				outfile.write('\t\t'+debsrc+'\n')
-		except:
-			pass
-		outfile.write("\tENDSOURCES\n")
+				current_source = SubElement(current_repo, 'line', attrib={'type':'source'})
+				try:
+					current_source.text = debsrc
+				except ValueError:
+					print "Couldn't add source " + deb
+		except KeyError:
+			print "No sources"
 
-		outfile.write("\tSTARTARCHS\n")
 		try:
 			for arch in repo['archs']:
-				outfile.write("\t\t"+arch+"\n")
-		except:
-			pass
-		outfile.write("\tENDARCHS\n")
+				current_arch = SubElement(current_repo, 'architecture', attrib={'arch':arch})
+		except KeyError:
+			print "No archs"
 
-		outfile.write("\tSTARTPACKAGES\n")
-		try:
-			for arch in repo['packages']:
-				outfile.write("\t\t"+arch+"\n")
+		for arch in repo['packages']:
+			for child in current_repo.getchildren():
+				if child.tag == 'architecture' and child.get('arch') == arch:
+					architecture = child
+			if architecture is not None:
 				for package in repo['packages'][arch]:
-					outfile.write("\t\t\t"+package[0] + " " + package[1] + "\n")
-		except:
-			pass
-		outfile.write("\tENDPACKAGES\n")
+					try:
+						p = SubElement(architecture, 'package', attrib={'name':package[0], 'version':package[1]})
+					except IndexError:
+						print "Didn't add package " + str(package)
 
-		outfile.write("ENDREPO\n\n")
+	outfile.write(lxml.etree.tostring(outxml, pretty_print=True))
 
 if 'resync' in sys.argv:
 	outfile = None

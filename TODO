@@ -12,3 +12,4 @@ Circumvent apt-file's Contents.gz file to give contents of repository
 Apt pinning to prevent malicious repos being added through updates
 A complementary GPG packaging tool
 XML data structure
+Add check to see if repo is working (stop packaging dead repos)
