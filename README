@@ -60,8 +60,7 @@ currently set to architecture "all", maintainer "chriswarbo@gmail.com"
 CACHE-CHECK.PY
 --------------
 This script checks a given file of repository data (given with the
--f=filename option) using the format described below. The nested
-structure is checked, to make sure nothing overlaps, and some basic
+-f=filename option) using the format described below. Some basic
 heuristics are used to validate the contents. This is useful since
 screen scraping is prone to errors, which should preferably be spotted
 ASAP rather than generating bogus packages.
@@ -73,36 +72,30 @@ still be present).
 
 DATA FORMAT
 -----------
-The format currently used to store repostory data is plain text with the
-following structure (tab-indented)
+The format currently used to store repostory data is XML-esque with the
+following structure
 
-STARTREPO
-	STARTDEBS
-		deb something.com sid
-		deb something.com stable
-	ENDDEBS
-	STARTSOURCES
-		deb-src something.com sid
-		deb-src something.com stable
-	ENDSOURCES
-	STARTARCHS
-		i386
-		all
-		powerpc
-	ENDARCHS
-	STARTPACKAGES
-		all
-			foo-data 1.0
-			bar-data 2.3
-			baz 8:4.2dfsg3
-		i386
-			foo 1.0
-			bar 2.3
-		powerpc
-			foo 1.0
-	ENDPACKAGES
-ENDREPO
-
-STARTREPO
-	STARTARCH
-and so on
+<repositories>
+	<repository>
+		<description>An example.</description>
+		<line type="binary">deb something.com sid</line>
+		<line type="binary">deb something.com stable</line>
+		<line type="source">deb-src something.com sid</line>
+		<line type="soufce">deb-src something.com stable</line>
+		<architecture arch="i386">
+			<package name="foo" version="1.0"/>
+			<package name="bar" version="2.3"/>
+		</architecure>
+		<architecture arch="all">
+			<package name="foo-data" version="1.0"/>
+			<package name="bar-data" version="2.3"/>
+			<package name="baz" version="8:4.2dfsg3"/>
+		</architecture>
+		<architecture arch="powerpc">
+			<package name="foo" version="1.0"/>
+		</architecture>
+	</repository>
+	<repository>
+		etc.
+	</repository>
+</repositories>

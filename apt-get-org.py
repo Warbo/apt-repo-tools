@@ -13,58 +13,84 @@ import re
 global count
 count = 0
 
+def XMLescape(txt):
+	"""Replaces FORM FEED, ESC and other invalid XML characters in the
+	given text, as well as converting as much as possible to UTF-8."""
+
+	# This will store the encoded version
+	text = ''
+
+	# Step through each character of the text
+	for char in txt:
+		# Attempt to add a UTF-8 encoded version to the result
+		try:
+			text = text + char.encode("utf-8")
+		except UnicodeDecodeError:
+			# Ignore errors
+			print 'not adding ' + char
+
+	# Replace characters
+	to_return = text.replace("&", "&amp;").replace("<", "&lt;").\
+		replace(">", "&gt;").replace('"', "&quot;").\
+		replace(u'\x0C', "").replace(u'\x1B', "")
+
+	# Send the result to the caller
+	return to_return
+
+#### TAKEN FROM THE LAZYWEB ####
 class MyHTTPConnection(httplib.HTTPConnection):
-    """A customised HTTPConnection allowing a per-connection
-    timeout, specified at construction."""
+	"""A customised HTTPConnection allowing a per-connection
+	timeout, specified at construction."""
 
-    def __init__(self, host, port=None, strict=None,
-                timeout=None):
-        httplib.HTTPConnection.__init__(self, host, port,
-                strict)
-        self.timeout = timeout
+	def __init__(self, host, port=None, strict=None, timeout=None):
+		httplib.HTTPConnection.__init__(self, host, port, strict)
+		self.timeout = timeout
 
-    def connect(self):
-        """Override HTTPConnection.connect to connect to
-        host/port specified in __init__."""
+	def connect(self):
+		"""Override HTTPConnection.connect to connect to
+		host/port specified in __init__."""
 
-        msg = "getaddrinfo returns an empty list"
-        for res in socket.getaddrinfo(self.host, self.port,
-                0, socket.SOCK_STREAM):
-            af, socktype, proto, canonname, sa = res
-            try:
-                self.sock = socket.socket(af, socktype, proto)
-                if self.timeout:   # this is the new bit
-                    self.sock.settimeout(self.timeout)
-                self.sock.connect(sa)
-            except socket.error, msg:
-                if self.sock:
-                    self.sock.close()
-                self.sock = None
-                continue
-            break
-        if not self.sock:
-            raise socket.error, msg
+		msg = "getaddrinfo returns an empty list"
+		for res in socket.getaddrinfo(self.host, self.port, \
+			0, socket.SOCK_STREAM):
+			af, socktype, proto, canonname, sa = res
+			try:
+				self.sock = socket.socket(af, socktype, proto)
+				if self.timeout:   # this is the new bit
+					self.sock.settimeout(self.timeout)
+				self.sock.connect(sa)
+			except socket.error, msg:
+				if self.sock:
+					self.sock.close()
+				self.sock = None
+				continue
+			break
+		if not self.sock:
+			raise socket.error, msg
 
 class MyHTTPHandler(urllib2.HTTPHandler):
-    """A customised HTTPHandler which times out connection
-    after the duration specified at construction."""
+	"""A customised HTTPHandler which times out connection
+	after the duration specified at construction."""
 
-    def __init__(self, timeout=None):
-        urllib2.HTTPHandler.__init__(self)
-        self.timeout = timeout
+	def __init__(self, timeout=None):
+		urllib2.HTTPHandler.__init__(self)
+		self.timeout = timeout
 
-    def http_open(self, req):
-        """Override http_open."""
+	def http_open(self, req):
+		"""Override http_open."""
 
-        def makeConnection(host, port=None, strict=None):
-            return MyHTTPConnection(host, port, strict,
-                    timeout = self.timeout)
+		def makeConnection(host, port=None, strict=None):
+			return MyHTTPConnection(host, port, strict, \
+				timeout = self.timeout)
 
-        #print "MyHTTPHandler opening", req.get_full_url()
-        return self.do_open(makeConnection, req)
+		return self.do_open(makeConnection, req)
+
+#### END LAZYWEB ####
 
 def get_repo(text):
-	"""Gets the repository data from HTML taken from apt-get.org."""
+	"""Gets the repository data from HTML taken from apt-get.org. The
+	argument should be a list of HTML"""
+
 	time.sleep(0.1)
 
 	# Show and decrement the counter
@@ -87,10 +113,7 @@ def get_repo(text):
 				repo['deb_lines'].append(temp.strip())
 			elif temp.startswith("deb-src "):
 				repo['debsrc_lines'].append(temp.strip())
-		#if '<span' in line:
-		#	print line
 		if '<span class="descr">' in line:
-			#print '.'
 			try:
 				desc = line[line.find('<span class="descr">'):]
 				repo['description'] = (desc[desc.find('>')+1:desc.find('</span')]).strip()
@@ -160,12 +183,10 @@ def apt_get_org(outfile):
 	r = r.replace('\n','')
 	rs = r.split('<br/>')
 	results_list = []
-	print "lol"
 	for part in rs:
 		if '</li>' in part:
 			results_list.append(part[:part.find('</li>')+5])
 			results_list.append(part[part.find('</li>')+5:])
-			print results_list[-2] + results_list[-1]
 		else:
 			results_list.append(part)
 
@@ -177,7 +198,7 @@ def apt_get_org(outfile):
 	repos = []
 	current_repo = []
 	for line in results_list:
-		if in_list and len(repos) < 10:
+		if in_list:
 			if "</ul" in line:
 				in_list = False
 			if in_repo:
@@ -206,21 +227,9 @@ def apt_get_org(outfile):
 	for repo in repositories:
 		current_repo = SubElement(reposxml, 'repository')
 
-		# from http://boodebr.org/main/python/all-about-python-and-unicode#UNI_XML
-		RE_XML_ILLEGAL = u'([\u0000-\u0008\u000b-\u000c\u000e-\u001f\ufffe-\uffff])' + \
-			u'|' + \
-			u'([%s-%s][^%s-%s])|([^%s-%s][%s-%s])|([%s-%s]$)|(^[%s-%s])' % \
-			(unichr(0xd800),unichr(0xdbff),unichr(0xdc00),unichr(0xdfff),
-				unichr(0xd800),unichr(0xdbff),unichr(0xdc00),unichr(0xdfff),
-				unichr(0xd800),unichr(0xdbff),unichr(0xdc00),unichr(0xdfff))
-		regex = re.compile(RE_XML_ILLEGAL)
-
 		if 'description' in repo.keys():
 			desc = SubElement(current_repo, 'description')
-			x = repo['description']
-			for match in regex.finditer(x):
-			    x = x[:match.start()] + "" + x[match.end():]
-			desc.text = x
+			desc.text = XMLescape(repo['description'])
 
 		try:
 			for deb in repo['deb_lines']:
