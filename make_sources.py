@@ -1,96 +1,48 @@
 #!/usr/bin/env python
 import hashlib
+import lxml.etree
 import sys
 
-def get_identifier(text):
+def get_identifier(line):
 	# Gets a friendly identifier for the given source list text
 	# This is the URL, for example
 	# deb http://www.debian-multimedia.org stable main
-	# Will give "debian-multimedia"
-	try:
-		for line in text.split("\n"):
-			d = False
-			if line[:7] == "deb-src":
-				ident = line[7:].strip().split(" ")[0].strip()
-				d = True
-			elif line[:3] == "deb":
-				ident = line[3:].strip().split(" ")[0].strip()
-				d = True
-			if d:
-				ident = ident.split('://')[1].strip()
-				if '/' in ident:
-					ident = ident.split('/')[0].strip()
-				ident_list = ident.split('.')
-				l = len(ident_list[0])
-				for i in ident_list:
-					l = max([l, len(i)])
-					if len(i) == l and (not i in ["www", "com", "org", "net", "ftp"]):
-						to_return = i
-				return to_return
-	except:
-		return ''
-
-def get_repos(text):
-	# This splits the given string into a list of repositories delimited
-	# by "STARTREPO" and "ENDREPO"
-	repos = []
-	current_repo = []
-	for line in text.split("\n"):
-		if "STARTREPO" in line:
-			current_repo = []
-		elif "ENDREPO" in line:
-			repos.append(current_repo)
+	# Will give "www-debian-multimedia-org-stable-main"
+	id = line.split('://')[1]
+	id = id.replace(' ', '-')
+	id = id.replace(':', '-')
+	id = id.replace('/', '-')
+	to_return = ''
+	for char in id:
+		if (not char.isalnum()) and (char != '-'):
+			to_return = to_return + '-'
 		else:
-			current_repo.append(line)
-	return repos
-
-def get_sections(repo):
-	# Turns a given list of lines (from a repo definition) and puts the
-	# contained values into a dictionary
-	features = {}
-	current_feature = None
-	currently_in = (None, None)
-	for line in repo:
-		if not line.strip() == "":
-			if "END" in line:
-				if "DEBS" in line:
-					features['deb'] = current_feature
-					current_feature = None
-				elif "SOURCES" in line:
-					features['debsrc'] = current_feature
-					current_feature = None
-				elif "ARCHS" in line:
-					features['archs'] = current_feature
-					current_feature = None
-				elif "PACKAGES" in line:
-					features['packages'] = current_feature
-					current_feature = None
-			elif "START" in line:
-				if "DEBS" in line:
-					current_feature = []
-					currently_in = ("DEBS", None)
-				elif "SOURCES" in line:
-					current_feature = []
-					currently_in = ("SOURCES", None)
-				elif "ARCHS" in line:
-					current_feature = []
-					currently_in = ("ARCHS", None)
-				elif "PACKAGES" in line:
-					current_feature = {}
-					currently_in = ("PACKAGES", None)
+			to_return = to_return + char
+	while to_return.endswith('-'):
+		to_return = to_return[:-1]
+	while to_return.startswith('-'):
+		to_return = to_return[1:]
+	id = ''
+	count = 0
+	for char in to_return:
+		if char == '-':
+			if count > 0:
+				count += 1
 			else:
-				if currently_in[0] in ("DEBS", "SOURCES", "ARCHS"):
-					current_feature.append(line[2:])
-				elif currently_in[0] == "PACKAGES":
-					if line.startswith("\t\t\t"):
-						current_feature[currently_in[1]].append(line[3:].split(' '))
-					elif line.startswith("\t\t"):
-						currently_in = (currently_in[0], line[2:])
-						try:
-							len(current_feature[currently_in[1]])
-						except KeyError:
-							current_feature[currently_in[1]] = []
-	return features
+				id = id + char
+				count += 1
+		else:
+			count = 0
+			id = id + char
+	return id.lower().strip()
+
+def get_repos(repos):
+	# This splits the given element into a list of repository elements
+	to_return = []
+	for child in repos:
+		if child.tag == 'repository':
+			to_return.append(child)
+	return to_return
 
 def get_args(line):
 	# Gets the values following a deb or deb-src line's URL
@@ -106,18 +58,14 @@ def make_source_lists(repo):
 	# the given repo dictinary could provide
 	lists = {}
 	handled_args = []
-	for deb in repo['deb']:
-		key = get_args(deb)
-		if key in lists.keys():
-			lists[key] = lists[key] + "## Binary\n" + deb + "\n"
-		else:
-			lists[key] = "### AUTOMATICALLY GENERATED SOURCE LIST\n\n## Binary\n" + deb + "\n"
-	for debsrc in repo['debsrc']:
-		key = get_args(debsrc)
-		if key in lists.keys():
-			lists[key] = lists[key] + "## Source\n" + debsrc + "\n"
-		else:
-			lists[key] = "### AUTOMATICALLY GENERATED SOURCE LIST\n\n## Source\n" + debsrc + "\n"
+	for deb in repo.findall('line'):
+		key = get_args(deb.text)
+		if key not in lists.keys():
+			lists[key] = "### AUTOMATICALLY GENERATED SOURCE LIST\n\n"
+		if deb.get('type') == "binary":
+			lists[key] = lists[key] + "## Binary\n" + deb.text + "\n"
+		elif deb.get('type') == "source":
+			lists[key] = lists[key] + "## Source\n" + deb.text + "\n"
 	return lists.values()
 
 # Get a file to read
@@ -134,16 +82,12 @@ else:
 	for line in infile.readlines():
 		inline = inline + line
 
-	# Split the text into lines for each repo
-	repo_text = get_repos(inline)
-	# Get a dictionary for each repo, containing its features
-	repos = []
-	for repo in repo_text:
-		repos.append(get_sections(repo))
+	# Get the XML root
+	root = lxml.etree.fromstring(inline)
 
 	# Make a list of sources.list strings from the repo features
 	sources = []
-	for repo in repos:
+	for repo in root:
 		sources.extend(make_source_lists(repo))
 
 	# Write out the source files
@@ -157,4 +101,3 @@ else:
 			f = open('temp/lists/'+get_identifier(source)+'_'+hash+'.list', 'w')
 			f.write(source)
 			f.close()
-
