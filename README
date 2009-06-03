@@ -1,32 +1,46 @@
 INTRO
 -----
-Repositories are often seen as a difficulty in Debian. Whilst adding
-and removing packages has become easier and easier, the same is not
-true for package repositories.
+Repositories are often seen as a difficulty in Debian and its
+derivatives. Whilst adding and removing packages has become easier and
+easier, the same is not true for package repositories.
 
-However, repositories can be added by adding an appropriate text file to
-/etc/apt/sources.list.d, and packages can contain files. Thus these
-tools aim to remove the complexities of managing repositories by simply
-packaging up every repository. These can then be installed, removed,
-updated, etc. just like any other package, with absolutely no change
-to the packaging system.
+However, repositories are just text files in /etc/apt/sources.list.d,
+and possibly a security key, both of which can be packaged.
 
-Also included are some examples, such as tools to fetch repository data
-from apt-get.org, and hopefully more to follow.
+Thus these tools aim to remove the complexities from managing
+repositories by simply packaging up every repository. These can then be
+installed, removed, updated, etc. just like any other package, with
+absolutely no changes to the way the APT packaging system works.
+
+Since these are boring in themselves, also included are some scripts to
+fetch data from apt-get.org and Launchpad's Personal Package Archives
+(PPAs), along with a few thousand repository packages built from this.
 
 CONTENTS
 --------
 apt-get-org.py - Screen scrapes www.apt-get.org, a vast collection of
 	third-party Debian repositories. Saves the data to a given file.
 
+launchpad_ppa_grabber.py - Screen scrapes launchpad.net, a centralised
+	database for hosting Ubuntu repositories
+
 make_sources.py - Creates files suitable to put in sources.list.d.
 	Automagically groups repos (eg. for matching deb and deb-src lines)
 
 make_packages.py - Creates packages based on the contents of temp/lists
 
+make_repo.py - Non-functional at the moment. Should make a repository
+	out of repository packages.
+
 cache-check.py - Does basic checks on a given file of repository data.
 
 cache.txt - cached repo data (output from apt-get-org.py)
+
+temp/ - Stores temporary files
+
+temp/lists/ - Stores apt's sources.list files
+
+temp/package/ - Stores temporary files for making packages
 
 APT-GET-ORG.PY
 --------------

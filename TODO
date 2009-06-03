@@ -1,15 +1,19 @@
 BUG FIXING
-The apt-get.org screen scraping may need fixing.
+The apt-get.org screen scraping may need fixing
+
+Launchpad scraping currently misses quite a few PPAs
 
 Add heuristics to guess distro, release, etc.
 
 Add repository maker
 
 WISHLIST
-Add Launchpad PPA scraping
-Get comments/description for repos (use as package description)
 Circumvent apt-file's Contents.gz file to give contents of repository
+
 Apt pinning to prevent malicious repos being added through updates
+
 A complementary GPG packaging tool
-XML data structure
+
 Add check to see if repo is working (stop packaging dead repos)
+
+Grab contents data from Packages.gz and Sources.gz

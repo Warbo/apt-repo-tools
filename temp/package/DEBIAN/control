@@ -1,8 +1,8 @@
-Package: triviazus-com-venenux-vnzpacks-piccoro
+Package: ppa-launchpad-net-zumastor-team-ppa-ubuntu-dapper-main
 Priority: extra
 Section: repositories
 Installed-Size: 1
 Maintainer: chriswarbo@gmail.com
 Architecture: all
-Version: 20090602
-Description: This package provides the triviazus-com-venenux-vnzpacks-piccoro repository.
+Version: 20090603
+Description: This package provides the ppa-launchpad-net-zumastor-team-ppa-ubuntu-dapper-main repository.
