@@ -14,7 +14,9 @@ absolutely no changes to the way the APT packaging system works.
 
 Since these are boring in themselves, also included are some scripts to
 fetch data from apt-get.org and Launchpad's Personal Package Archives
-(PPAs), along with a few thousand repository packages built from this.
+(PPAs). This is stored in cache.txt and ppa.txt. Running make_sources.py
+on these, followed by make_packages.py will generate over 8000 packages
+in the temp folder, one for each repository.
 
 CONTENTS
 --------
