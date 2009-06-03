@@ -4,5 +4,5 @@ Section: repositories
 Installed-Size: 1
 Maintainer: chriswarbo@gmail.com
 Architecture: all
-Version: 20090601
+Version: 20090602
 Description: This package provides the triviazus-com-venenux-vnzpacks-piccoro repository.

@@ -40,12 +40,6 @@ def makeControl(name):
 	controlFile.write('Maintainer: chriswarbo@gmail.com\n')
 	controlFile.write('Architecture: all\n')
 	controlFile.write('Version: '+time.strftime("%Y%m%d", time.gmtime())+'\n')
-	#dependsLine = 'Depends: '
-	#for current in self.metaPackage.getDepends():
-	#	dependsLine = dependsLine + current + ', '
-	#dependsLine = dependsLine[:-2] + '\n'
-	#controlFile.write(dependsLine)
-	#controlFile.write('Conflicts: ' + self.metaPackage.getName() + '-setup\n')		# By conflicting with the setup package it will get removed by APT
 	controlFile.write('Description: This package provides the ' + name + ' repository.\n')
 	controlFile.close()
 
@@ -69,17 +63,6 @@ def buildPackage(filename):
 		os.wait()
 	except OSError:
 		pass
-
-	#os.popen('cd ' + os.getcwd() + '/temp/ + '/' + self.metaPackage.getName() + '/data && reprepro includedeb ' + self.codename + ' ' + self.location + '/' + self.metaPackage.getName() + '/' + self.metaPackage.getName() + '.deb', 'r')		# This inserts it into the repository
-	#	try:
-	#		os.wait()
-	#	except:
-	#		pass
-	#	os.popen('rm ' + self.location + '/' + self.metaPackage.getName() + '/' + self.metaPackage.getName() + '.deb', 'r')		# This removes the original file now that a copy is in the repository
-	#	try:
-	#		os.wait()
-	#	except:
-	#		pass
 
 for filename in os.listdir('temp/lists'):
 	f = open('temp/lists/'+filename, 'r')
