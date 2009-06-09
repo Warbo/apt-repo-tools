@@ -7,6 +7,8 @@ Add heuristics to guess distro, release, etc.
 
 Add repository maker
 
+Make cache checker ensure 1 component per APT line
+
 WISHLIST
 Circumvent apt-file's Contents.gz file to give contents of repository
 
