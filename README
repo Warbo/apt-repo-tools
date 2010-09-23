@@ -10,21 +10,23 @@ and possibly a security key, both of which can be packaged.
 Thus these tools aim to remove the complexities from managing
 repositories by simply packaging up every repository. These can then be
 installed, removed, updated, etc. just like any other package, with
-absolutely no changes to the way the APT packaging system works.
+absolutely no changes to the way the APT packaging system works. No need to
+define arbitrary new protocols, distribution systems, system tools, etc. We just
+use Debian's already excellent package facilities.
 
-Since these are boring in themselves, also included are some scripts to
+Since these tools are boring in themselves, also included are some scripts to
 fetch data from apt-get.org and Launchpad's Personal Package Archives
 (PPAs). This is stored in cache.txt and ppa.txt. Running make_sources.py
 on these, followed by make_packages.py will generate over 8000 packages
-in the temp folder, one for each repository.
+in the temp folder, one for each repository. It's a start ;)
 
 CONTENTS
 --------
 apt-get-org.py - Screen scrapes www.apt-get.org, a vast collection of
 	third-party Debian repositories. Saves the data to a given file.
 
-launchpad_ppa_grabber.py - Screen scrapes launchpad.net, a centralised
-	database for hosting Ubuntu repositories
+launchpad_ppa_grabber.py - Screen scrapes launchpad.net, site which hosts a few
+	Ubuntu repositories
 
 make_sources.py - Creates files suitable to put in sources.list.d.
 	Automagically groups repos (eg. for matching deb and deb-src lines)
@@ -63,15 +65,13 @@ the option "-f=something". It then parses this to find unique
 combinations for repository/suite. Identical ones are grouped (eg.
 "deb something.com stable" and "deb-src something.com stable") then
 put into files suitable for including in /etc/apt/sources.list.d
-(only parses the files at the moment, doesn't save to files yet since
-the naming scheme isn't decided upon yet)
 
 MAKE_PACKAGES.PY
 ----------------
 This script looks through the "temp/lists" folder for sources.list.d files
 and generates a package for each one in "temp". The packages are
-currently set to architecture "all", maintainer "chriswarbo@gmail.com"
-(me) and have no dependencies or significant description.
+currently set to architecture "all", maintainer "unknown@unknown.com"
+and have no dependencies or significant description.
 
 CACHE-CHECK.PY
 --------------

@@ -5,13 +5,17 @@
 def makeRepoControlFile():
 	'''This makes the configuration file for the repository which is
 	going to be made.'''
-	# The reprepro program uses a text configuration file to specify repository details
-	# FIXME: Other architectures and distribution should be added if specified as includes
+	# The reprepro program uses a text configuration file to specify repository
+	# details
+	# FIXME: Other architectures and distribution should be added if specified
+	# as includes
 	originLine = 'Origin: Repository generator'		# FIXME: How to get a meaningful name when run under gksudo?
 	labelLine = 'Label: ' + self.metaPackage.getName()
-	# The 'codename' is the release name, for example Debian 4.0 is "etch", Ubuntu 7.04 is "feisty".
-	# Here we only grab the current system's, although this should be expanded in the future to allow includes like 'Distro:etch'
-	# for including mutliple repositories (compression should sort out space issues of redundant data)
+	# The 'codename' is the release name, for example Debian 4.0 is "etch",
+	# Ubuntu 7.04 is "feisty".
+	# Here we only grab the current system's, although this should be expanded
+	# in the future to allow includes like 'Distro:etch' for including mutliple
+	# repositories (compression should sort out space issues of redundant data)
 	codenameOut = os.popen('lsb_release -c', 'r')
 	for line in codenameOut:
 		self.codename = line

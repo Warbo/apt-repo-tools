@@ -10,11 +10,11 @@ Add repository maker
 Make cache checker ensure 1 component per APT line
 
 WISHLIST
-Circumvent apt-file's Contents.gz file to give contents of repository
+Look for apt-file's Contents.gz file to give contents of repository
 
 Apt pinning to prevent malicious repos being added through updates
 
-A complementary GPG packaging tool
+A complementary GPG key packaging tool
 
 Add check to see if repo is working (stop packaging dead repos)
 
