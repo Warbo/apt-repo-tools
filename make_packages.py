@@ -7,36 +7,52 @@ import time
 def get_id(lines):
 	"""Gets a nice ID for the repo in the given lines (ie. one without dodgy
 	characters)"""
-	id = ''		# This will be the repo ID
-	to_return = ''		# This is what we'll output (sanitised further)
+	results = {'name':'','sections':[],'release':'','type':''}		# Repo details
 	# Look through what we've been given for an actual repo line
 	for line in lines:
 		if line.startswith("deb ") or line.startswith('deb-src '):
-			# We want to lose the first bit (deb/deb-src) and focus on the rest
-			for bit in line.split(' ', 1)[1].split(' '):
-				# Sanitise by getting rid of uppercase, spaces and protocols
-				x = bit.lower().strip().replace("http://", "")
-				# Get rid of slashes, dots and colons
-				x = x.replace("/","-").replace(".","-").replace(":","-")
-				# Now stick this piece onto the repo ID
-				id = (id + x + "-").lower()
-			# Now loop through the ID we just made
-			for char in id:
-				# Sanitise further by only allowing alphanumeric characters
-				if char.isalnum() and (not char == '~'):
-					to_return = to_return + char
-				else:
-					to_return = to_return + '-'
-			# Now strip prefixed hyphens
-			while to_return.startswith('-'):
-				to_return = to_return[1:]
-			# Then suffixed hyphens
-			while to_return.endswith('-'):
-				to_return = to_return[:-1]
-			# Finally give back the ID
-			return to_return
+			# Split apart the line
+			bits = line.strip().split(' ')
 
-def makeControl(name):
+			# Grab the type
+			if 'deb' in bits:
+				results['type'] = 'deb'
+				bits.remove('deb')
+			elif 'deb-src':
+				results['type'] = 'deb-src'
+				bits.remove('deb-src')
+
+			# Grab the host
+			results['name'] = bits[0]
+			# Sanitise it
+			results['name'] = results['name'].split('://')[1]
+			results['name'] = results['name'].replace('.','-')
+			results['name'] = results['name'].replace(':','-')
+			results['name'] = results['name'].replace('/','-')
+			results['name'] = ''.join([char for char in results['name'] if (char.isalnum() or char == '-')])
+			while '--' in results['name']:
+				results['name'] = results['name'].replace('--','-')
+
+			# Now grab any other data we can
+			for bit in bits[1:]:
+				# See if we have a debootstrap script for this bit
+				if bit in os.listdir('/usr/share/debootstrap/scripts'):
+					# if so then it's an OS release name
+					results['release'] = bit
+
+				else:
+					# Otherwise let's take it to be a section
+					results['sections'].append(''.join([char for char in bit if char.isalnum()]))
+
+			# Stick the sections onto the name
+			results['name'] = results['name'] + '-' + '-'.join(results['sections'])
+			while results['name'].endswith('-'):
+				results['name'] = results['name'][:-1]
+			
+			# Finally give back the results
+			return results
+
+def makeControl(results):
 	"""Package details are kept in a structured text file called 'control'"""
 	# First we make some folders to work in
 	try:
@@ -45,15 +61,16 @@ def makeControl(name):
 		pass
 	controlFile = open('temp/package/DEBIAN/control', 'w')
 	# Then we add relevant information
-	controlFile.write('Package: ' + name + '\n')
+	controlFile.write('Package: ' + results['name'] + '\n')
 	controlFile.write('Priority: extra\n')
 	controlFile.write('Section: repositories\n')
 	controlFile.write('Installed-Size: 1\n')		# FIXME
 	controlFile.write('Maintainer: unknown@unknown.com\n')		# FIXME ;)
 	controlFile.write('Architecture: all\n')
 	controlFile.write('Version: '+time.strftime("%Y%m%d", time.gmtime())+'\n')
-	controlFile.write('Description: This package provides the ' + name + ' repository.\n')
+	controlFile.write('Description: This package provides the ' + results['name'] + ' repository.\n')
 	controlFile.close()
+	return results
 
 def makeDebianFile():
 	"""This is required by dpkg"""
@@ -61,7 +78,7 @@ def makeDebianFile():
 	debianFile.write('2.0')		# Always use 2.0
 	debianFile.close()
 
-def buildPackage(filename):
+def buildPackage(filename, details):
 	"""Builds the package"""
 	# Wipe out any leftovers from a previous build and start fresh
 	try:
@@ -74,7 +91,12 @@ def buildPackage(filename):
 	# area
 	shutil.copy('temp/lists/'+filename, 'temp/package/etc/apt/sources.list.d')
 	# This builds the package
-	os.popen('dpkg-deb -b ' + 'temp/package temp/'+filename+'.deb', 'r')
+	if details['release'] is '':
+		details['release'] = 'all'
+	if details['release'] not in os.listdir(os.getcwd()+'/packages'):
+		os.makedirs(os.getcwd()+'/packages/'+details['release'])
+		
+	os.popen('dpkg-deb -b ' + 'temp/package packages/'+details['release']+'/'+filename+'.deb', 'r')
 	# Now wait for the build to complete
 	try:
 		os.wait()
@@ -88,10 +110,10 @@ if __name__ == '__main__':
 		# Open it
 		f = open('temp/lists/'+filename, 'r')
 		# Build its package data
-		makeControl(get_id(f.readlines()))
+		details = makeControl(get_id(f.readlines()))
 		# Give it a package version
 		makeDebianFile()
 		# Build a package for it
-		buildPackage(filename)
+		buildPackage(filename, details)
 		# Move on
 		f.close()
