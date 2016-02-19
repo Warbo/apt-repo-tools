@@ -91,6 +91,7 @@ DATA FORMAT
 The format currently used to store repostory data is XML-esque with the
 following structure
 
+```
 <repositories>
 	<repository>
 		<description>An example.</description>
@@ -115,3 +116,4 @@ following structure
 		etc.
 	</repository>
 </repositories>
+```
